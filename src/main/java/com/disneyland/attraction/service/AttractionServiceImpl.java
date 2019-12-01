@@ -81,8 +81,6 @@ public class AttractionServiceImpl implements AttractionService {
 	    return attractionImageDTO;
 	}
 	
-	
-	
 	@Override
 	public AttractionDTO get(String id) {
 		long attractionId;
