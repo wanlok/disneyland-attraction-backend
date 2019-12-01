@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,8 @@ import com.disneyland.attraction.dao.LocationDAO;
 import com.disneyland.attraction.dto.AttractionDTO;
 import com.disneyland.attraction.dto.AttractionImageDTO;
 import com.disneyland.attraction.dto.AttractionRemoveDTO;
-import com.disneyland.attraction.dto.AttractionV2DTO;
+import com.disneyland.attraction.dto.LocationAttractionDTO;
+import com.disneyland.attraction.dto.LocationAttractionsDTO;
 import com.disneyland.attraction.model.Attraction;
 import com.disneyland.attraction.model.Location;
 
@@ -100,13 +100,23 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 	
 	@Override
-	public List<AttractionV2DTO> getV2() {
-		List<AttractionV2DTO> aa = new ArrayList<AttractionV2DTO>();
-		
+	public List<LocationAttractionsDTO> getByLocation() {
+		List<LocationAttractionsDTO> locationAttractionsDTOs = new ArrayList<LocationAttractionsDTO>();
 		List<Attraction> attractions = attractionDAO.get();
-		
 		List<Location> locations = locationDAO.get();
-		
-		return aa;
+		for (Location location: locations) {
+			List<LocationAttractionDTO> locationAttractionDTOs = new ArrayList<LocationAttractionDTO>();
+			for (Attraction attraction: attractions) {
+				if (location.getLocation_id() == attraction.getLocation_id()) {
+					LocationAttractionDTO locationAttractionDTO = new LocationAttractionDTO(attraction);
+					locationAttractionDTOs.add(locationAttractionDTO);
+				}
+			}
+			LocationAttractionsDTO locationAttractionsDTO = new LocationAttractionsDTO();
+			locationAttractionsDTO.setLocation_name(location.getName());
+			locationAttractionsDTO.setAttractions(locationAttractionDTOs);
+			locationAttractionsDTOs.add(locationAttractionsDTO);
+		}
+		return locationAttractionsDTOs;
 	}
 }

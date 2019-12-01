@@ -2,13 +2,10 @@ package com.disneyland.attraction.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
@@ -27,7 +24,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.disneyland.attraction.dto.AttractionDTO;
 import com.disneyland.attraction.dto.AttractionImageDTO;
 import com.disneyland.attraction.dto.AttractionRemoveDTO;
-import com.disneyland.attraction.dto.AttractionV2DTO;
+import com.disneyland.attraction.dto.LocationAttractionsDTO;
 import com.disneyland.attraction.model.Attraction;
 import com.disneyland.attraction.service.AttractionService;
 import com.disneyland.attraction.service.AttractionServiceImpl;
@@ -44,10 +41,10 @@ public class AttractionController {
 		return ResponseEntity.ok().body(attractions);
 	}
 	
-	@RequestMapping(value="/attractionV2", method= { RequestMethod.GET })
-	public ResponseEntity<List<AttractionV2DTO>> getV2() {
-		List<AttractionV2DTO> attractions = attractionService.getV2();
-		return ResponseEntity.ok().body(attractions);
+	@RequestMapping(value="/locationAttraction", method= { RequestMethod.GET })
+	public ResponseEntity<List<LocationAttractionsDTO>> getV2() {
+		List<LocationAttractionsDTO> LocationAttractionsDTOs = attractionService.getByLocation();
+		return ResponseEntity.ok().body(LocationAttractionsDTOs);
 	}
 	
 	@RequestMapping(value="/attraction/{id}", method = { RequestMethod.GET })
