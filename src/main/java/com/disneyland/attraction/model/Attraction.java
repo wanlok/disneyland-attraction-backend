@@ -99,4 +99,13 @@ public class Attraction {
 	public void setLocation_id(Long location_id) {
 		this.location_id = location_id;
 	}
+
+	@Override
+	public String toString() {
+		return "Attraction [attraction_id=" + attraction_id + ", name=" + name + ", description=" + description
+				+ ", height=" + height + ", start_hour=" + start_hour + ", end_hour=" + end_hour + ", availability="
+				+ availability + ", location_id=" + location_id + "]";
+	}
+	
+	
 }

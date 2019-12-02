@@ -18,7 +18,6 @@ import com.disneyland.attraction.dao.LocationDAO;
 import com.disneyland.attraction.dto.AttractionDTO;
 import com.disneyland.attraction.dto.AttractionImageDTO;
 import com.disneyland.attraction.dto.AttractionRemoveDTO;
-import com.disneyland.attraction.dto.LocationAttractionDTO;
 import com.disneyland.attraction.dto.LocationAttractionsDTO;
 import com.disneyland.attraction.model.Attraction;
 import com.disneyland.attraction.model.Location;
@@ -93,8 +92,14 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 	@Override
-	public List<Attraction> get() {
-		return attractionDAO.get();
+	public List<AttractionDTO> get() {
+		List<Attraction> attractions = attractionDAO.get();
+		List<AttractionDTO> attractionDTOs = new ArrayList<AttractionDTO>();
+		for (Attraction attraction: attractions) {
+			AttractionDTO attractionDTO = new AttractionDTO(attraction);
+			attractionDTOs.add(attractionDTO);
+		}
+		return attractionDTOs;
 	}
 	
 	@Override
@@ -103,16 +108,16 @@ public class AttractionServiceImpl implements AttractionService {
 		List<Attraction> attractions = attractionDAO.get();
 		List<Location> locations = locationDAO.get();
 		for (Location location: locations) {
-			List<LocationAttractionDTO> locationAttractionDTOs = new ArrayList<LocationAttractionDTO>();
+			List<AttractionDTO> attractionDTOs = new ArrayList<AttractionDTO>();
 			for (Attraction attraction: attractions) {
 				if (location.getLocation_id() == attraction.getLocation_id()) {
-					LocationAttractionDTO locationAttractionDTO = new LocationAttractionDTO(attraction);
-					locationAttractionDTOs.add(locationAttractionDTO);
+					AttractionDTO attractionDTO = new AttractionDTO(attraction);
+					attractionDTOs.add(attractionDTO);
 				}
 			}
 			LocationAttractionsDTO locationAttractionsDTO = new LocationAttractionsDTO();
 			locationAttractionsDTO.setLocation_name(location.getName());
-			locationAttractionsDTO.setAttractions(locationAttractionDTOs);
+			locationAttractionsDTO.setAttractions(attractionDTOs);
 			locationAttractionsDTOs.add(locationAttractionsDTO);
 		}
 		return locationAttractionsDTOs;

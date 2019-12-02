@@ -1,5 +1,7 @@
 package com.disneyland.attraction.dto;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.disneyland.attraction.model.Attraction;
 
 public class AttractionDTO {
@@ -17,8 +19,10 @@ public class AttractionDTO {
 	private String end_hour;
 	
 	private String availability;
-	
+
 	private Long location_id;
+	
+	private String image_url;
 	
 	public AttractionDTO(Attraction attraction) {
 		setAttraction_id(attraction.getAttraction_id());
@@ -29,6 +33,8 @@ public class AttractionDTO {
 		setEnd_hour(attraction.getEnd_hour());
 		setAvailability(attraction.getAvailability());
 		setLocation_id(attraction.getLocation_id());
+		String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+		setImage_url(baseUrl + "/attraction/" + getAttraction_id() + "/image" );
 	}
 
 	public Long getAttraction_id() {
@@ -54,7 +60,7 @@ public class AttractionDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public String getHeight() {
 		return height;
 	}
@@ -93,5 +99,13 @@ public class AttractionDTO {
 
 	public void setLocation_id(Long location_id) {
 		this.location_id = location_id;
+	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
 	}
 }

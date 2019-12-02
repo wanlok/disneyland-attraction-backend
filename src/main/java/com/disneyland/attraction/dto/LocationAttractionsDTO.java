@@ -6,7 +6,7 @@ public class LocationAttractionsDTO {
 
 	private String location_name;
 	
-	private List<LocationAttractionDTO> attractions;
+	private List<AttractionDTO> attractions;
 	
 	public LocationAttractionsDTO() {
 		
@@ -20,11 +20,11 @@ public class LocationAttractionsDTO {
 		this.location_name = location_name;
 	}
 
-	public List<LocationAttractionDTO> getAttractions() {
+	public List<AttractionDTO> getAttractions() {
 		return attractions;
 	}
 
-	public void setAttractions(List<LocationAttractionDTO> attractions) {
+	public void setAttractions(List<AttractionDTO> attractions) {
 		this.attractions = attractions;
 	}
 }

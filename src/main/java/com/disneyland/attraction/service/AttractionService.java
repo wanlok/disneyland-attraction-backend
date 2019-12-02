@@ -18,6 +18,6 @@ public interface AttractionService {
 	AttractionRemoveDTO remove(String id);
 	AttractionImageDTO saveImage(String id, CommonsMultipartFile file, HttpSession session);
 	AttractionDTO get(String id);
-	List<Attraction> get();
+	List<AttractionDTO> get();
 	List<LocationAttractionsDTO> getByLocation();
 }

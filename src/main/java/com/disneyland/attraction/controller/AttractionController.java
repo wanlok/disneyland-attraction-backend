@@ -36,8 +36,8 @@ public class AttractionController {
 	private AttractionService attractionService;
 	
 	@RequestMapping(value="/attraction", method = { RequestMethod.GET })
-	public ResponseEntity<List<Attraction>> get() {
-		List<Attraction> attractions = attractionService.get();
+	public ResponseEntity<List<AttractionDTO>> get() {
+		List<AttractionDTO> attractions = attractionService.get();
 		return ResponseEntity.ok().body(attractions);
 	}
 	
