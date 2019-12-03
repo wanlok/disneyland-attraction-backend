@@ -43,9 +43,6 @@ public class AttractionDAOImpl implements AttractionDAO {
 	public void remove(Long attractionId) {
 		Session session = sessionFactory.getCurrentSession();
 		Attraction attraction = (Attraction)session.load(Attraction.class, new Long(attractionId));
-		System.out.println("VERIFYING");
-		System.out.println(attraction);
-		System.out.println("END VERIFY");
 		if (attraction != null) {
 			session.delete(attraction);
 		}

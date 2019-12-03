@@ -68,7 +68,9 @@ public class AttractionController {
 			file = new File(AttractionServiceImpl.UPLOAD_DIRECTORY + File.separator + 0);
 		}
 		InputStream inputStream = new FileInputStream(file);
-	    return IOUtils.toByteArray(inputStream);
+		byte[] bytes = IOUtils.toByteArray(inputStream);
+		inputStream.close();
+	    return bytes;
 	}
 	
 	@RequestMapping(value="/attraction/{id}/image", method = { RequestMethod.POST })
@@ -85,6 +87,11 @@ public class AttractionController {
 	
 	@RequestMapping(value="/attraction/{id}", method = { RequestMethod.DELETE })
 	public ResponseEntity<?> put(@PathVariable("id") String id) {
+		String path = AttractionServiceImpl.UPLOAD_DIRECTORY + File.separator + id;
+		File file = new File(path);
+		if (file.exists()) {
+			file.delete();
+		}
 		AttractionRemoveDTO attractionRemoveDTO = attractionService.remove(id);
 		return ResponseEntity.ok().body(attractionRemoveDTO);
 	}
