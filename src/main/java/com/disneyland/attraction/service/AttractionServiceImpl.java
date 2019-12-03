@@ -2,13 +2,18 @@ package com.disneyland.attraction.service;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -22,11 +27,13 @@ import com.disneyland.attraction.dto.LocationAttractionsDTO;
 import com.disneyland.attraction.model.Attraction;
 import com.disneyland.attraction.model.Location;
 
+@PropertySource("classpath:application.properties")
 @Service
 @Transactional
 public class AttractionServiceImpl implements AttractionService {
 
-	public static final String UPLOAD_DIRECTORY ="C:/Files/images";
+	@Autowired
+	private Environment environment;
 	
 	@Autowired
 	private AttractionDAO attractionDAO;
@@ -55,7 +62,14 @@ public class AttractionServiceImpl implements AttractionService {
 			attractionId = 0L;
 		}
 		attractionDAO.remove(attractionId);
-		attractionRemoveDTO.setStatus(true);
+		String path = environment.getProperty("image.path") + File.separator + id;
+		File file = new File(path);
+		if (file.exists()) {
+			file.delete();
+			attractionRemoveDTO.setStatus(true);
+		} else {
+			attractionRemoveDTO.setStatus(false);
+		}
 		return attractionRemoveDTO;
 	}
 	
@@ -63,7 +77,7 @@ public class AttractionServiceImpl implements AttractionService {
 	public AttractionImageDTO saveImage(String id, CommonsMultipartFile file, HttpSession session) {
 	    AttractionImageDTO attractionImageDTO = new AttractionImageDTO();
 //	    ServletContext context = session.getServletContext();
-	    String path = UPLOAD_DIRECTORY;
+	    String path = environment.getProperty("image.path");
 //	    String fileName = file.getOriginalFilename();
 	    String fileName = id;
 	    byte[] bytes = file.getBytes();
@@ -80,6 +94,24 @@ public class AttractionServiceImpl implements AttractionService {
 	    return attractionImageDTO;
 	}
 	
+	@Override
+	public byte[] getImage(String id) {
+		String path = environment.getProperty("image.path") + File.separator;
+		File file = new File(path + id);
+//		if (!file.exists()) {
+//			file = new File(path + 0);
+//		}
+		byte[] bytes = null;
+		try {
+			InputStream inputStream = new FileInputStream(file);
+			bytes = IOUtils.toByteArray(inputStream);
+			inputStream.close();
+		} catch (Exception e) {
+			
+		}
+	    return bytes;
+	}
+
 	@Override
 	public AttractionDTO get(String id) {
 		long attractionId;

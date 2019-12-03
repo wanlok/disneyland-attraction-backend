@@ -1,14 +1,10 @@
 package com.disneyland.attraction.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +23,6 @@ import com.disneyland.attraction.dto.AttractionRemoveDTO;
 import com.disneyland.attraction.dto.LocationAttractionsDTO;
 import com.disneyland.attraction.model.Attraction;
 import com.disneyland.attraction.service.AttractionService;
-import com.disneyland.attraction.service.AttractionServiceImpl;
 
 @RestController
 public class AttractionController {
@@ -62,15 +57,7 @@ public class AttractionController {
 	@ResponseBody
 	@RequestMapping(value = "/attraction/{id}/image", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public byte[] getImage(@PathVariable("id") String id) throws IOException {
-		String path = AttractionServiceImpl.UPLOAD_DIRECTORY + File.separator + id;
-		File file = new File(path);
-		if (!file.exists()) {
-			file = new File(AttractionServiceImpl.UPLOAD_DIRECTORY + File.separator + 0);
-		}
-		InputStream inputStream = new FileInputStream(file);
-		byte[] bytes = IOUtils.toByteArray(inputStream);
-		inputStream.close();
-	    return bytes;
+		return attractionService.getImage(id);
 	}
 	
 	@RequestMapping(value="/attraction/{id}/image", method = { RequestMethod.POST })
@@ -87,11 +74,6 @@ public class AttractionController {
 	
 	@RequestMapping(value="/attraction/{id}", method = { RequestMethod.DELETE })
 	public ResponseEntity<?> put(@PathVariable("id") String id) {
-		String path = AttractionServiceImpl.UPLOAD_DIRECTORY + File.separator + id;
-		File file = new File(path);
-		if (file.exists()) {
-			file.delete();
-		}
 		AttractionRemoveDTO attractionRemoveDTO = attractionService.remove(id);
 		return ResponseEntity.ok().body(attractionRemoveDTO);
 	}

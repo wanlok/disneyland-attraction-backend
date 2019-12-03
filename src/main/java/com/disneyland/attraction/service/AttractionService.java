@@ -17,6 +17,7 @@ public interface AttractionService {
 	void modify(Attraction attraction);
 	AttractionRemoveDTO remove(String id);
 	AttractionImageDTO saveImage(String id, CommonsMultipartFile file, HttpSession session);
+	byte[] getImage(String id);
 	AttractionDTO get(String id);
 	List<AttractionDTO> get();
 	List<LocationAttractionsDTO> getByLocation();
