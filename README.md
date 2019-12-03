@@ -1,4 +1,4 @@
-This project is the backend module to connect MySQL database and populate content in JSON format for frontend applications to fetch and maintain Disneyland Attractions
+This project is the backend module to connect MySQL database and populate content in JSON format for frontend applications to fetch and maintain Disneyland attractions
 
 1. Enable MySQL server
 2. Create a new database in MySQL with disneyland as the name and utf8_general_ci as the encoding
